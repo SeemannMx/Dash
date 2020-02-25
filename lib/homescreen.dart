@@ -43,9 +43,12 @@ class _HomescreenState extends State<Homescreen> {
       );
 
   _getBody() {
+    _provider.chatbot();
+
     return StreamBuilder<Object>(
         stream: widget.timeStreamController.stream,
         builder: (context, snapshot) {
+          _chars.clear();
           _provider.run(widget.timeStreamController, 10, 2);
 
           return (snapshot.data != null)

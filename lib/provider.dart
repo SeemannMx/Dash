@@ -1,11 +1,6 @@
-import 'dart:math';
-
-import 'package:flutter/material.dart';
-import 'package:flutter_dash/homescreen.dart';
-
-import 'package:http/http.dart';
 import 'dart:convert';
 import 'dart:async';
+import 'package:http/http.dart';
 
 class Provider {
   Provider._internal() {}
@@ -20,7 +15,8 @@ class Provider {
   int _runner = 0;
 
   // URL
-  String url_Numbers = "http://numbersapi.com/random/math?json";
+  String url_numbers = "http://numbersapi.com/random/math?json";
+  String url = "http://localhost:5005";
 
   factory Provider({var p}) {
     return _provider;
@@ -30,16 +26,16 @@ class Provider {
     if (_runner == 0) {
       print('Timer started ...');
       _timer = Timer.periodic(Duration(seconds: intervall), (_) {
-        _getTime(ctr, url_Numbers, limit);
+        _getTime(ctr, limit);
       });
       _runner++;
     }
   }
 
-  _getTime(StreamController ctr, String url, int limit) async {
+  _getTime(StreamController ctr, int limit) async {
     _cancelTimer(limit);
 
-    await get(url).then((_t) {
+    await get(url_numbers).then((_t) {
       _value = jsonDecode(_t.body);
       ctr.sink.add(_value['number']);
     });
@@ -54,5 +50,10 @@ class Provider {
 
   clear() {
     if (_timer != null) _timer.cancel();
+  }
+
+  chatbot() async {
+    print("send request to rasa $url");
+    await get(url).then((response) => print(response.body));
   }
 }
