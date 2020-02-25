@@ -32,12 +32,6 @@ class DashScreen extends StatefulWidget {
 
 class _DashScreenState extends State<DashScreen> {
   StreamController _timeStreamController = StreamController();
-  Timer _timer;
-  Size _size;
-
-  int _timerMax = 10;
-  int runner = 0;
-  var _value;
 
   @override
   Widget build(BuildContext context) {
@@ -45,22 +39,13 @@ class _DashScreenState extends State<DashScreen> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        this._size =
-            Size(constraints.biggest.width, constraints.biggest.height);
         return Scaffold(
           body: Homescreen(
             timeStreamController: _timeStreamController,
-            size: _size,
+            size: Size(constraints.biggest.width, constraints.biggest.height),
           ),
         );
       },
     );
-  }
-
-  @override
-  dispose() {
-    if (_timeStreamController != null) _timeStreamController.close();
-    if (_timer != null) _timer.cancel();
-    super.dispose();
   }
 }

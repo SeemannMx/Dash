@@ -51,4 +51,8 @@ class Provider {
       print('Timer stoped at Tick: ${_timer.tick}');
     }
   }
+
+  clear() {
+    if (_timer != null) _timer.cancel();
+  }
 }

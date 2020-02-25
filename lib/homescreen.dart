@@ -19,9 +19,24 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   Provider _provider = Provider();
+  Random _random = Random();
+  List<String> _chars = [];
+  List<Color> _colors = [
+    Colors.blueAccent,
+    Colors.blueAccent[100],
+    Colors.blue[200],
+    Colors.pinkAccent
+  ];
+  double _fontsize, _padding;
 
   @override
   Widget build(BuildContext context) => _getHomescreen();
+
+  @override
+  dispose() {
+    _provider.clear();
+    super.dispose();
+  }
 
   _getHomescreen() => Scaffold(
         body: _getBody(),
@@ -40,60 +55,51 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   _getListBody(String nr) {
-    List<String> chars = [];
-    for (int i = 0; i < nr.length; i++) chars.add(nr[i]);
+    for (int i = 0; i < nr.length; i++) _chars.add(nr[i]);
 
-    double fontsize = _getFontsize(chars);
-    double padding = fontsize * 0.25;
+    _fontsize = _getFontsize();
+    _padding = _fontsize * 0.25;
 
     return Align(
       alignment: Alignment.center,
       child: Container(
-          height: fontsize,
-          width: (fontsize - padding + (padding * 0.115)) * chars.length,
+          height: _fontsize,
+          width: (_fontsize - _padding + (_padding * 0.115)) * _chars.length,
           color: Colors.indigoAccent,
-          child: _getList(chars, fontsize, padding)),
+          child: _getList()),
     );
   }
 
-  _getList(List<String> chars, double fontsize, double padding) {
+  _getList() {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: chars.length,
+        itemCount: _chars.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             color: _getColor(index),
             alignment: Alignment.center,
-            padding: EdgeInsets.symmetric(horizontal: padding),
+            padding: EdgeInsets.symmetric(horizontal: _padding),
             child: Text(
-              chars[index],
-              style: TextStyle(fontSize: fontsize / 2),
+              _chars[index],
+              style: TextStyle(fontSize: _fontsize / 2),
             ),
           );
         });
   }
 
-  _getFontsize(List<String> chars) {
-    return double.parse(chars[0]) < 8
-        ? double.parse(chars[0]) * 50
+  _getFontsize() {
+    return double.parse(_chars[0]) < 8
+        ? double.parse(_chars[0]) * 50
         : widget.size.height / 2;
   }
 
   _getColor(int index) {
-    List<Color> colors = [
-      Colors.blueAccent,
-      Colors.blueAccent[100],
-      Colors.blue[200],
-      Colors.pinkAccent
-    ];
-
-    Random random = Random();
-    index = random.nextInt(colors.length);
+    index = _random.nextInt(_colors.length);
     int last = index;
 
-    if (index == last && index == colors.length) index - 1;
+    if (index == last && index == _colors.length) index - 1;
     if (index == last && index == 0) index + 1;
 
-    return colors[index];
+    return _colors[index];
   }
 }
