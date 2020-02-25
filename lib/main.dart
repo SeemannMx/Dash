@@ -33,6 +33,7 @@ class _DashScreenState extends State<DashScreen> {
   int runner = 0;
   var _value;
 
+  @override
   dispose() {
     if (_timeStreamController != null) _timeStreamController.close();
     if (_timer != null) _timer.cancel();
@@ -47,16 +48,18 @@ class _DashScreenState extends State<DashScreen> {
   }
 
   _getBody() {
-    return Container(
-      child: Center(
-        child: StreamBuilder<Object>(
-            stream: _timeStreamController.stream,
-            builder: (context, snapshot) {
-              _run();
-              return Text(snapshot.data.toString());
-            }),
-      ),
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return Container(
+        child: Center(
+          child: StreamBuilder<Object>(
+              stream: _timeStreamController.stream,
+              builder: (context, snapshot) {
+                _run();
+                return Text(snapshot.data.toString());
+              }),
+        ),
+      );
+    });
   }
 
   _run() {
@@ -70,7 +73,7 @@ class _DashScreenState extends State<DashScreen> {
   }
 
   _getTime(String url) async {
-    _canelTimer();
+    _cancelTimer();
 
     await get(url).then((_t) {
       _value = jsonDecode(_t.body);
@@ -78,7 +81,7 @@ class _DashScreenState extends State<DashScreen> {
     });
   }
 
-  _canelTimer() {
+  _cancelTimer() {
     if (_timer.tick < _timerMax) {
       //print('send ${_timer.tick} request');
     } else {
