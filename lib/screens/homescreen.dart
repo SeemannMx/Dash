@@ -38,7 +38,7 @@ class _HomescreenState extends State<Homescreen> {
   }
 
   _getStackItemText() {
-    return Text(_getDotText("010110011", 10000),
+    return Text(_getDotText("010110011", 5000),
         style: TextStyle(fontFamily: "Dot", color: Colors.white.withAlpha(50)));
   }
 
