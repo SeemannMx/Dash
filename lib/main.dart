@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/homescreen.dart';
+import 'package:flutter_dash/startscreen.dart';
 
 import 'package:http/http.dart';
 import 'dart:convert';
@@ -19,7 +20,8 @@ class DashApp extends StatelessWidget {
         Homescreen.route: (context) => Homescreen(
               size: null,
               timeStreamController: null,
-            )
+            ),
+        Startscreen.route: (context) => Startscreen(size: null)
       },
     );
   }
@@ -40,10 +42,15 @@ class _DashScreenState extends State<DashScreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-          body: Homescreen(
+          body: Startscreen(size: Size(constraints.biggest.width, constraints.biggest.height))
+
+              /**
+          Homescreen(
             timeStreamController: _timeStreamController,
             size: Size(constraints.biggest.width, constraints.biggest.height),
           ),
+            **/
+
         );
       },
     );
