@@ -22,7 +22,6 @@ class StartPainter extends CustomPainter {
     _path.close();
 
     canvas.drawPath(_path, _paint);
-
     _path = Path();
     _paint = Paint();
 
@@ -44,3 +43,4 @@ class StartPainter extends CustomPainter {
   @override
   bool shouldRepaint(StartPainter old) => xPos != old.xPos && yPos != old.yPos;
 }
+

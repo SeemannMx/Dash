@@ -6,11 +6,7 @@ class Provider {
   Provider._internal() {}
   static Provider _provider = Provider._internal();
 
-  // Objects
   Timer _timer;
-
-  // Parameter
-  var _parameter;
   var _value;
   int _runner = 0;
 
@@ -18,9 +14,7 @@ class Provider {
   String url_numbers = "http://numbersapi.com/random/math?json";
   String url = "http://localhost:5005";
 
-  factory Provider({var p}) {
-    return _provider;
-  }
+  factory Provider({var p}) => _provider;
 
   run(StreamController ctr, limit, intervall) {
     if (_runner == 0) {
@@ -35,10 +29,13 @@ class Provider {
   _getTime(StreamController ctr, int limit) async {
     _cancelTimer(limit);
 
+    print("send request to  $url_numbers");
     await get(url_numbers).then((_t) {
       _value = jsonDecode(_t.body);
       ctr.sink.add(_value['number']);
-    });
+
+      print("response:  ${_value['number']}");
+    }).timeout(Duration(seconds: 10));
   }
 
   _cancelTimer(int limit) {
@@ -53,7 +50,7 @@ class Provider {
   }
 
   chatbot() async {
-    print("send request to rasa $url");
-    await get(url).then((response) => print(response.body));
+    //print("send request to rasa $url");
+    //await get(url).then((response) => print(response.body));
   }
 }
