@@ -1,13 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_dash/homescreen.dart';
-import 'package:flutter_dash/startscreen.dart';
-import 'package:flutter_dash/startscreen.dart';
+import 'package:flutter_dash/screens/homescreen.dart';
+import 'package:flutter_dash/screens/startscreen.dart';
 
-import 'package:http/http.dart';
-import 'dart:convert';
-import 'dart:async';
 
 void main() => runApp(DashApp());
 
@@ -18,10 +12,7 @@ class DashApp extends StatelessWidget {
       title: 'Flutter Dash',
       home: DashScreen(),
       routes: {
-        Homescreen.route: (context) => Homescreen(
-              size: null,
-              timeStreamController: null,
-            ),
+        Homescreen.route: (context) => Homescreen(),
         Startscreen.route: (context) => Startscreen()
       },
     );
@@ -34,27 +25,12 @@ class DashScreen extends StatefulWidget {
 }
 
 class _DashScreenState extends State<DashScreen> {
-  StreamController _timeStreamController = StreamController();
-
   @override
   Widget build(BuildContext context) {
-    print('build');
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Scaffold(
-            body: Startscreen(),
-
-            /**
-            body: Startscreen()
-                  Homescreen(
-                    timeStreamController: _timeStreamController,
-                    size: Size(constraints.biggest.width, constraints.biggest.height),
-                  ),
-            **/
-
-        );
-      },
-    );
+    return LayoutBuilder(builder: (context, constraints) {
+      return Scaffold(
+        body: Startscreen(),
+      );
+    });
   }
 }

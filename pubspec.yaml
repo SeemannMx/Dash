@@ -11,8 +11,8 @@ dependencies:
 
   cupertino_icons: ^0.1.2
   http: ^0.12.0+4
-  countdown: ^0.1.0
-  #google_fonts: ^0.3.9
+  #countdown: ^0.1.0
+  google_fonts: ^0.3.9
 
 dev_dependencies:
   flutter_test:
@@ -21,3 +21,24 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  fonts:
+    - family: Prata
+      fonts:
+        - asset: assets/fonts/Prata-Regular.ttf
+
+    - family: Apple
+      fonts:
+        - asset: assets/fonts/HomemadeApple-Regular.ttf
+
+    - family: Cabin
+      fonts:
+        - asset: assets/fonts/CabinSketch-Regular.ttf
+
+    - family: Dot
+      fonts:
+        - asset: assets/fonts/RalewayDots-Regular.ttf
+
+    - family: Elite
+      fonts:
+        - asset: assets/fonts/SpecialElite-Regular.ttf
