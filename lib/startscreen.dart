@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
@@ -18,6 +20,7 @@ class StartscreenState extends State<Startscreen> {
 
   Offset _position = Offset(0,0);
   ValueChanged<Offset> onChanged;
+  Helper _helper = Helper();
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +44,6 @@ class StartscreenState extends State<Startscreen> {
       this._position = _getPosition(offset);
       if (onChanged != null) onChanged(_position);
     });
-
-    print(_position);
   }
 
   _getPosition(Offset offset) {
@@ -57,10 +58,58 @@ class StartscreenState extends State<Startscreen> {
 
   _end(DragEndDetails details) {
     //print("end");
+    Offset o1 = Offset(0, widget.size.height);
+    Offset o2 = Offset(widget.size.width, 0);
+    _helper.calculateLine(o1, o2);
+    //print(_position);
   }
 
   _update(DragUpdateDetails details) {
     //print("update");
     _onChanged(details.globalPosition);
   }
+}
+
+class Helper{
+
+  Helper._internal() {}
+  static Helper _helper = Helper._internal();
+  factory Helper() =>  _helper;
+
+  calculateLine(Offset start, Offset end){
+    Line limit = Line();
+    limit.create(start, end);
+  }
+}
+
+class Line {
+
+  Line._internal() {}
+  static Line _line = Line._internal();
+  factory Line() =>  _line;
+
+  Point start;
+  Point end;
+
+
+  create(Offset s, Offset e){
+    start = Point(s.dx, s.dy);
+    end = Point(e.dx, e.dy);
+
+    _getYPointLine(s);
+    _getYPointLine(e);
+  }
+
+  // y = m * x + b
+  _getYPointLine(Offset position){
+    var m = (end.y - start.y) / (end.x - start.x);
+    var b = start.y - (m * start.x);
+
+    var y = m * position.dx + b;
+
+    print("f(${position.dx}) = $y");
+    return y;
+  }
+
+
 }
