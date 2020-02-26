@@ -18,6 +18,7 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
+
   Provider _provider = Provider();
   Random _random = Random();
   List<String> _chars = [];

@@ -1,78 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/gestures.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_dash/start_painter.dart';
 
 class Startscreen extends StatefulWidget {
+
   static String route = "/start";
 
-  Startscreen({@required this.size});
+  final double xPos;
+  final double yPos;
+  final ValueChanged<Offset> onChanged;
 
-  Size size;
+  const Startscreen({Key key,
+    this.onChanged,
+    this.xPos:0.0,
+    this.yPos:0.0}) : super(key: key);
 
   @override
-  _StartscreenState createState() => _StartscreenState();
+  StartscreenState createState() => new StartscreenState();
 }
 
-class _StartscreenState extends State<Startscreen> {
+/**
+ * Draws a circle at supplied position.
+ *
+ */
+class StartscreenState extends State<Startscreen> {
+  double xPos = 0.0;
+  double yPos = 0.0;
+
+  GlobalKey _painterKey = new GlobalKey();
+
+  void onChanged(Offset offset) {
+    final RenderBox referenceBox = context.findRenderObject();
+    Offset position = referenceBox.globalToLocal(offset);
+    if (widget.onChanged != null)
+      widget.onChanged(position);
+
+    setState(() {
+      xPos = position.dx;
+      yPos = position.dy;
+    });
+  }
+
+  @override
+  bool hitTestSelf(Offset position) => true;
+
+  @override
+  void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
+    if (event is PointerDownEvent ) {
+      // ??
+    }
+  }
+
+  void _handlePanStart(DragStartDetails details) {
+    onChanged(details.globalPosition);
+  }
+
+  void _handlePanEnd(DragEndDetails details) {
+    print('end');
+    // TODO
+  }
+
+  void _handlePanUpdate(DragUpdateDetails details) {
+    onChanged(details.globalPosition);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: <Widget>[
-        CustomPaint(
-          size: widget.size,
-          painter: StartPainter("top"),
+    return new ConstrainedBox(
+      constraints: new BoxConstraints.expand(),
+      child: new GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onPanStart:_handlePanStart,
+        onPanEnd: _handlePanEnd,
+        onPanUpdate: _handlePanUpdate,
+        child: new CustomPaint(
+          size: new Size(xPos, yPos),
+          painter: StartPainter(xPos, yPos)
         ),
-        CustomPaint(
-          size: widget.size,
-          painter: StartPainter("bottom"),
-        ),
-      ],
+      ),
     );
-  }
-}
-
-class StartPainter extends CustomPainter {
-  StartPainter(@required this.type);
-
-  String type = "default";
-
-  Size _size;
-  Path _path = Path();
-  Paint _paint = Paint();
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    this._size = size;
-    _clear();
-
-    if(type.compareTo("top") == 0){
-      _isTop();
-    } else {
-      _isBottom();
-    }
-    canvas.drawPath(_path, _paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter old) {
-    return true;
-  }
-
-  _isTop(){
-    _paint.color = Colors.black12;
-    _path.lineTo(0, _size.height);
-    _path.lineTo(_size.width, 0);
-    _path.close();
-  }
-
-  _isBottom(){
-    _paint.color = Colors.blueGrey;
-    _path.moveTo(0,_size.height);
-    _path.lineTo(_size.width, 0);
-    _path.lineTo(_size.width,_size.height);
-    _path.close();
-  }
-
-  _clear(){
-    this._path.reset();
   }
 }
