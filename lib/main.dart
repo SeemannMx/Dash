@@ -22,7 +22,7 @@ class DashApp extends StatelessWidget {
               size: null,
               timeStreamController: null,
             ),
-        Startscreen.route: (context) => Startscreen()
+        Startscreen.route: (context) => Startscreen(size: null)
       },
     );
   }
@@ -43,7 +43,7 @@ class _DashScreenState extends State<DashScreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Scaffold(
-            body: Startscreen(),
+            body: Startscreen(size: Size(constraints.biggest.width, constraints.biggest.height),
 
             /**
             body: Startscreen()
@@ -53,7 +53,7 @@ class _DashScreenState extends State<DashScreen> {
                   ),
             **/
 
-        );
+        ));
       },
     );
   }

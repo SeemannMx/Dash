@@ -4,81 +4,63 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_dash/start_painter.dart';
 
 class Startscreen extends StatefulWidget {
-
   static String route = "/start";
 
-  final double xPos;
-  final double yPos;
-  final ValueChanged<Offset> onChanged;
+  Size size;
 
-  const Startscreen({Key key,
-    this.onChanged,
-    this.xPos:0.0,
-    this.yPos:0.0}) : super(key: key);
+  Startscreen({Key key,@required this.size,}) : super(key: key);
 
   @override
   StartscreenState createState() => new StartscreenState();
 }
 
-/**
- * Draws a circle at supplied position.
- *
- */
 class StartscreenState extends State<Startscreen> {
-  double xPos = 0.0;
-  double yPos = 0.0;
 
-  GlobalKey _painterKey = new GlobalKey();
-
-  void onChanged(Offset offset) {
-    final RenderBox referenceBox = context.findRenderObject();
-    Offset position = referenceBox.globalToLocal(offset);
-    if (widget.onChanged != null)
-      widget.onChanged(position);
-
-    setState(() {
-      xPos = position.dx;
-      yPos = position.dy;
-    });
-  }
-
-  @override
-  bool hitTestSelf(Offset position) => true;
-
-  @override
-  void handleEvent(PointerEvent event, BoxHitTestEntry entry) {
-    if (event is PointerDownEvent ) {
-      // ??
-    }
-  }
-
-  void _handlePanStart(DragStartDetails details) {
-    onChanged(details.globalPosition);
-  }
-
-  void _handlePanEnd(DragEndDetails details) {
-    print('end');
-    // TODO
-  }
-
-  void _handlePanUpdate(DragUpdateDetails details) {
-    onChanged(details.globalPosition);
-  }
+  Offset _position = Offset(0,0);
+  ValueChanged<Offset> onChanged;
 
   @override
   Widget build(BuildContext context) {
-    return new ConstrainedBox(
-      constraints: new BoxConstraints.expand(),
-      child: new GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onPanStart:_handlePanStart,
-        onPanEnd: _handlePanEnd,
-        onPanUpdate: _handlePanUpdate,
-        child: new CustomPaint(
-          size: new Size(xPos, yPos),
-          painter: StartPainter(xPos, yPos)
+    return Container(
+      height: widget.size.height,
+      width: widget.size.width,
+      child: GestureDetector(
+        onPanStart: _start,
+        onPanEnd: _end,
+        onPanUpdate: _update,
+        child: CustomPaint(
+          size: Size(_position.dx, _position.dy),
+            painter: StartPainter(_position.dx, _position.dy)
         ),
       ),
     );
+  }
+
+  _onChanged(Offset offset) {
+    setState(() {
+      this._position = _getPosition(offset);
+      if (onChanged != null) onChanged(_position);
+    });
+
+    print(_position);
+  }
+
+  _getPosition(Offset offset) {
+    RenderBox referenceBox = context.findRenderObject();
+    return referenceBox.globalToLocal(offset);
+  }
+
+  _start(DragStartDetails details) {
+    //print("start");
+    _onChanged(details.globalPosition);
+  }
+
+  _end(DragEndDetails details) {
+    //print("end");
+  }
+
+  _update(DragUpdateDetails details) {
+    //print("update");
+    _onChanged(details.globalPosition);
   }
 }
