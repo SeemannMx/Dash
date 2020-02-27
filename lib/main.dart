@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dash/screens/authscreen.dart';
 import 'package:flutter_dash/screens/homescreen.dart';
 import 'package:flutter_dash/screens/startscreen.dart';
 
@@ -13,7 +14,8 @@ class DashApp extends StatelessWidget {
       home: DashScreen(),
       routes: {
         Homescreen.route: (context) => Homescreen(),
-        Startscreen.route: (context) => Startscreen()
+        Startscreen.route: (context) => Startscreen(),
+        Authscreen.route: (context) => Authscreen(),
       },
     );
   }

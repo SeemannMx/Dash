@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dash/screens/home_auth.dart';
+import 'package:flutter_dash/screens/authscreen.dart';
 import 'package:flutter_dash/screens/home_controll.dart';
 import 'package:flutter_dash/screens/home_list.dart';
 
@@ -27,7 +27,6 @@ class _HomescreenState extends State<Homescreen> {
       children: <Widget>[
         _getStackItemText(),
         _getStackItemHomeControll(),
-        _getStackItemHomeAuth(),
         //_getStackItemList(),
       ],
     );
@@ -40,10 +39,6 @@ class _HomescreenState extends State<Homescreen> {
 
   _getStackItemHomeControll(){
     return HomeControll(size: _size);
-  }
-
-  _getStackItemHomeAuth(){
-    return HomeAuth(size: _size);
   }
 
   _getStackItemList() {

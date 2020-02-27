@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_dash/screens/authscreen.dart';
 import 'package:flutter_dash/utils/helper.dart';
 import 'package:flutter_dash/screens/homescreen.dart';
 import 'package:flutter_dash/screens/start_painter.dart';
@@ -23,7 +24,6 @@ class StartscreenState extends State<Startscreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         _size = Size(constraints.biggest.width, constraints.biggest.height);
-
         return Container(
           height: constraints.biggest.height,
           width: constraints.biggest.width,
@@ -61,16 +61,14 @@ class StartscreenState extends State<Startscreen> {
 
     // is Position left of Line
     if (_helper.isLeft(_position)) {
-      // Profile: Guest
       Navigator.pushNamed(context, Homescreen.route);
     } else {
-      // Profile: Enterprise
-      // Navigator.pushNamed(context, Enterprisescreen.route);
+      Navigator.pushNamed(context, Authscreen.route);
     }
   }
 
   _end(DragEndDetails details) {
-    // print("end");
+    // print("end");}
   }
 
   _update(DragUpdateDetails details) {

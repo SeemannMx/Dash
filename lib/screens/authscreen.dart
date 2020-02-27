@@ -3,21 +3,26 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 
-class HomeAuth extends StatefulWidget {
-  HomeAuth({@required this.size});
+class Authscreen extends StatefulWidget {
 
-  Size size;
+  static String route ="/auth";
 
   @override
-  _HomeAuthState createState() => _HomeAuthState();
+  _AuthscreenState createState() => _AuthscreenState();
 }
 
-class _HomeAuthState extends State<HomeAuth> {
+class _AuthscreenState extends State<Authscreen> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  Size _size;
 
   @override
   Widget build(BuildContext context) {
-    return _getAuth();
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        _size = Size(constraints.biggest.width, constraints.biggest.height);
+        return _getAuth();
+      },
+    );
   }
 
   _handleSignIn() async {
@@ -25,12 +30,14 @@ class _HomeAuthState extends State<HomeAuth> {
     AuthResult result = await _auth.signInWithEmailAndPassword(email: "hello@dash.test", password: "test1234").catchError((e)=> print(e));
     FirebaseUser user = result.user;
     print(user.email);
+    Navigator.pop(context);
+
   }
 
   _getAuth(){
     return Container(
-      height: widget.size.height * 0.3,
-      width: widget.size.width * 0.3,
+      height: _size.height * 0.3,
+      width: _size.width * 0.3,
       color: Colors.amber.shade900,
       child: Column(
         children: <Widget>[
