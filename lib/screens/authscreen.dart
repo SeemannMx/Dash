@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class Authscreen extends StatefulWidget {
-
-  static String route ="/auth";
+  static String route = "/auth";
 
   @override
   _AuthscreenState createState() => _AuthscreenState();
@@ -19,111 +18,91 @@ class _AuthscreenState extends State<Authscreen> {
     return LayoutBuilder(
       builder: (context, constraints) {
         _size = Size(constraints.biggest.width, constraints.biggest.height);
-        return _getAuth();
+        return Scaffold(
+          backgroundColor: Colors.grey.shade800,
+          body: Center(
+            child: ListView(
+              shrinkWrap: true,
+              padding: EdgeInsets.only(left: 24.0, right: 24.0),
+              children: <Widget>[
+                _getImage("logo", "assets/img/logo.png"),
+                SizedBox(height: 48.0),
+                _getTextFormField("Email"),
+                SizedBox(height: 8.0),
+                _getTextFormField("Passord"),
+                SizedBox(height: 24.0),
+                _getRaisedButton('Log In', _handleSignIn),
+              ],
+            ),
+          ),
+        );
       },
     );
   }
 
   _handleSignIn() async {
     print("login ...");
-    AuthResult result = await _auth.signInWithEmailAndPassword(email: "hello@dash.test", password: "test1234").catchError((e)=> print(e));
+    AuthResult result = await _auth
+        .signInWithEmailAndPassword(
+            email: "hello@dash.test", password: "test1234")
+        .catchError((e) => print(e));
     FirebaseUser user = result.user;
     print(user.email);
     Navigator.pop(context);
-
   }
 
-  _getAuth(){
+  _getTextFormField(String type) {
+    return TextFormField(
+      style: TextStyle(color: Colors.grey.shade800, fontFamily: "Lato"),
+      textAlign: TextAlign.center,
+      keyboardType:
+          (type == "Email") ? TextInputType.emailAddress : TextInputType.text,
+      initialValue: (type == "Email") ? "hello@dash.test" : "test1234",
+      obscureText: (type == "Email") ? false : true,
+      autofocus: false,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white,
+        hintText: type,
+        contentPadding: EdgeInsets.all(5),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+          borderSide: const BorderSide(color: Colors.grey, width: 1.5),
+        ),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32.0),
+        ),
+      ),
+    );
+  }
 
-    final logo = Hero(
-      tag: 'hero',
+  _getImage(String tag, String path) {
+    return Hero(
+      tag: tag,
       child: CircleAvatar(
         backgroundColor: Colors.transparent,
         radius: 48.0,
-        child: Image.asset('assets/img/logo.png'),
+        child: Image.asset(path),
       ),
     );
+  }
 
-    final email = TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      initialValue: 'hello@dash.test',
-      autofocus: false,
-      decoration: InputDecoration(
-        filled: true,
-        fillColor: Colors.white,
-        hintText: 'Email',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.0),
-          borderSide: const BorderSide(color: Colors.grey, width: 1.5),
-        ),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32.0),
-        ),
-      ),
-    );
-
-    final password = TextFormField(
-      autofocus: false,
-      initialValue: 'some password',
-      obscureText: true,
-      decoration: InputDecoration(
-
-        filled: true,
-        fillColor: Colors.white,
-        hintText: 'Password',
-        contentPadding: EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32.0),
-          borderSide: const BorderSide(color: Colors.grey, width: 1.5),
-        ),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32.0)
-        ),
-      ),
-    );
-
-    final loginButton = Padding(
+  _getRaisedButton(String label, VoidCallback callback) {
+    return Padding(
       padding: EdgeInsets.symmetric(vertical: 16.0),
       child: RaisedButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
-        onPressed: () {
-          _handleSignIn();
-        },
-        padding: EdgeInsets.all(12),
-        color: Colors.lightBlueAccent,
-        child: Text('Log In', style: TextStyle(color: Colors.white)),
-      ),
-    );
-
-    final forgotLabel = FlatButton(
-      child: Text(
-        'Forgot password?',
-        style: TextStyle(color: Colors.white),
-      ),
-      onPressed: () {},
-    );
-
-    return Scaffold(
-      backgroundColor: Colors.grey.shade800,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          padding: EdgeInsets.only(left: 24.0, right: 24.0),
-          children: <Widget>[
-            logo,
-            SizedBox(height: 48.0),
-            email,
-            SizedBox(height: 8.0),
-            password,
-            SizedBox(height: 24.0),
-            loginButton,
-            forgotLabel
-          ],
-        ),
-      ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(24),
+          ),
+          onPressed: callback,
+          /**
+              onPressed: () {
+              _handleSignIn();
+              },
+           **/
+          padding: EdgeInsets.all(12),
+          color: Colors.lightBlueAccent,
+          child: Text(label, style: TextStyle(color: Colors.white))),
     );
   }
 }

@@ -46,3 +46,7 @@ flutter:
     - family: Elite
       fonts:
         - asset: assets/fonts/SpecialElite-Regular.ttf
+
+    - family: Latp
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
