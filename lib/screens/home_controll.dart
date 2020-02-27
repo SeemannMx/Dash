@@ -1,3 +1,6 @@
+import 'dart:html';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -15,6 +18,8 @@ class HomeControll extends StatefulWidget {
 class _HomeControllState extends State<HomeControll> {
   bool onTapTop = false;
   bool onTapBottom = false;
+  bool onTapText = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +27,7 @@ class _HomeControllState extends State<HomeControll> {
       children: <Widget>[
         _getStackItemTopTriangle(),
         _getStackItemBottomTriangle(),
-        _getStackItemtext()
+        _getStackItemtext(),
       ],
     );
   }
@@ -62,17 +67,14 @@ class _HomeControllState extends State<HomeControll> {
     return Center(
       child: GestureDetector(
         onTap: () {
-          print("HomeControll onTap Bottom");
-          setState(() { onTapBottom = !onTapBottom; });
+          print("HomeControll onTap Text");
+          setState(() { onTapText = !onTapText; });
         },
         child: ClipPath(
             child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(8)),
-                  border: Border.all(color: Colors.pinkAccent, width: 1)),
+              color: (onTapText ? Colors.pinkAccent.shade400 : Colors.white),
               height: widget.size.height / 2,
-              width: widget.size.width / 2,
+              width: widget.size.height / 2,
             ),
             clipper: CenterText()),
       ),
@@ -109,17 +111,20 @@ class BottomTriangle extends CustomClipper<Path> {
 }
 
 class CenterText extends CustomClipper<Path> {
-  Path p = Path();
-  PMFont font;
+  Path _p = Path();
 
   @override
   Path getClip(Size size) {
 
-    rootBundle.load("assets/fonts/Prata-Regular.ttf").then(((ByteData data) {
+    // I N O V E X
+    List <Offset> points = [];
+    points.add(Offset(size.width / 2, 0));
+    points.add(Offset(size.width , size.height / 2));
+    points.add(Offset(size.width / 2, size.height));
+    points.add(Offset(0, size.height / 2));
+    _p.addPolygon(points, true);
 
-    }));
-
-    return null;
+    return _p;
   }
 
   @override
