@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dash/screens/homescreen.dart';
 import 'package:flutter_dash/screens/playscreen.dart';
 import 'package:flutter_dash/utils/authenticator.dart';
 
@@ -36,7 +37,14 @@ class _AuthscreenState extends State<Authscreen> {
                 SizedBox(height: _size.height * 0.025),
                 _getTextFormField("Passord"),
                 SizedBox(height: _size.height * 0.025),
-                _getRaisedButton('Log In', _login),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    _getRaisedButton('back', _back),
+                    SizedBox(width: _size.width * 0.025),
+                    _getRaisedButton('login', _login),
+                  ],
+                )
               ],
             ),
           ),
@@ -82,18 +90,24 @@ class _AuthscreenState extends State<Authscreen> {
   }
 
   _getRaisedButton(String label, VoidCallback callback) {
-    return Padding(
-        padding: EdgeInsets.symmetric(vertical: 16.0),
-        child: RaisedButton(
-            highlightElevation: _corr,
-            elevation: _corr / 10,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(24),
-            ),
-            onPressed: callback,
-            padding: EdgeInsets.all(12),
-            color: Colors.lightBlueAccent,
-            child: _getText(label, "Lato")));
+    return Expanded(
+      child: Padding(
+          padding: EdgeInsets.symmetric(vertical: _corr / 60),
+          child: RaisedButton(
+              hoverColor: (label == "login")
+                  ? Colors.greenAccent.withAlpha(150)
+                  : Colors.pinkAccent.withAlpha(150),
+              splashColor: Colors.purple,
+              highlightElevation: _corr,
+              elevation: _corr / 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(_corr / 25),
+              ),
+              onPressed: callback,
+              padding: EdgeInsets.all(_corr / 75),
+              color: Colors.lightBlueAccent,
+              child: _getText(label, "Lato"))),
+    );
   }
 
   _getText(String label, String familiy) {
@@ -107,7 +121,11 @@ class _AuthscreenState extends State<Authscreen> {
 
   _login() {
     _auth.handleSignIn(() {
-      Navigator.pushNamed(context, Playscreen.route);
+      //Navigator.pushNamed(context, Playscreen.route);
     });
+  }
+
+  _back() {
+    Navigator.pushNamed(context, Homescreen.route);
   }
 }

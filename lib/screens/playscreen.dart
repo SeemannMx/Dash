@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dash/screens/startscreen.dart';
 import 'package:flutter_dash/utils/authenticator.dart';
 import 'package:flutter_dash/utils/clipper.dart';
 
@@ -55,7 +56,7 @@ class _PlayscreenState extends State<Playscreen> {
   _getStack(int limit) {
     this._widgets = List<Widget>();
     for (int i = 0; i < limit; i++) {
-      _widgets.add(_getCircle(i));
+      this._widgets.add(_getCircle(i));
     }
     return Stack(children: _widgets);
   }
@@ -80,6 +81,9 @@ class _PlayscreenState extends State<Playscreen> {
           this._lenght--;
         });
         if (_lenght == 1) _getDialog();
+      },
+      onDoubleTap: () {
+        Navigator.pushNamed(context, Startscreen.route);
       },
       child: ClipOval(
           child: Container(

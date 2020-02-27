@@ -12,6 +12,8 @@ class Authenticator {
 
   FirebaseAuth _fire = FirebaseAuth.instance;
   FirebaseUser _user;
+
+  FirebaseUser get user => _user;
   AuthResult _result;
 
   handleSignIn(VoidCallback callback) async {
@@ -19,6 +21,7 @@ class Authenticator {
     await _fire
         .signInWithEmailAndPassword(email: "hello@dash.test", password: "test1234")
         .then((AuthResult response){
+          _user = response.user;
           print(response.user.email);
           callback.call();
         }).catchError((e) => print(e));
