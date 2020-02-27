@@ -47,6 +47,8 @@ flutter:
       fonts:
         - asset: assets/fonts/SpecialElite-Regular.ttf
 
-    - family: Latp
+    - family: Lato
       fonts:
         - asset: assets/fonts/Lato-Regular.ttf
+        - asset: assets/fonts/Lato-Light.ttf
+          weight: 200
