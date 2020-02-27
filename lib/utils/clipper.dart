@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/widgets.dart';
 
 class TopTriangle extends CustomClipper<Path> {
@@ -49,4 +50,22 @@ class CenterText extends CustomClipper<Path> {
 
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => true;
+}
+
+class CircleClip extends CustomClipper<Rect> {
+
+  CircleClip({@required this.offset,@required this.radius });
+
+  Offset offset;
+  double radius;
+
+  @override
+  Rect getClip(Size size) {
+    return Rect.fromCircle(center: offset, radius: radius);
+
+    return  Rect.fromLTRB(offset.dx, offset.dy, size.width, size.height);
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> old) => true;
 }
