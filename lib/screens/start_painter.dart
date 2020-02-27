@@ -64,7 +64,7 @@ class StartPainter extends CustomPainter {
 
   _drawText(Canvas canvas) {
     // Text
-    _textPainter = _getTextPainter("Influencer", "Cabin");
+    _textPainter = _getTextPainter("Open Source", "Cabin");
     _textOffset = Offset(_size.width / 2 - _fontsize * 5, _size.height / 4.5);
     _textPainter.paint(canvas, _textOffset);
 

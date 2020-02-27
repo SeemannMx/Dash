@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dash/screens/home_controll.dart';
 import 'package:flutter_dash/screens/home_list.dart';
 
 class Homescreen extends StatefulWidget {
@@ -20,19 +21,12 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  _getDotText(String text, int limit) {
-    String result = "";
-    for (int i = 0; i < limit; i++) {
-      result += text;
-    }
-    return result;
-  }
-
   _getBody() {
     return Stack(
       children: <Widget>[
         _getStackItemText(),
-        _getStackItemList(),
+        _getStackItemHomeControll(),
+        //_getStackItemList(),
       ],
     );
   }
@@ -42,9 +36,20 @@ class _HomescreenState extends State<Homescreen> {
         style: TextStyle(fontFamily: "Dot", color: Colors.white.withAlpha(50)));
   }
 
+  _getStackItemHomeControll(){
+    return HomeControll(size: _size);
+  }
+
   _getStackItemList() {
-    return HomeList(
-      size: _size,
-    );
+    return HomeList(size: _size,);
+  }
+
+  _getDotText(String text, int limit) {
+    String result = "";
+    for (int i = 0; i < limit; i++) {
+      result += text;
+    }
+    return result;
   }
 }
+
