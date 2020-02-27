@@ -16,7 +16,7 @@ class _PlayscreenState extends State<Playscreen> {
   Size _size;
   double _corr;
 
-  List <Color> _colors = [
+  List<Color> _colors = [
     Colors.grey,
     Colors.blue,
     Colors.blueGrey,
@@ -32,6 +32,9 @@ class _PlayscreenState extends State<Playscreen> {
     Colors.deepPurpleAccent
   ];
 
+  List<Widget> _widgets = List<Widget>();
+  int _lenght = Random().nextInt(100);
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -43,42 +46,80 @@ class _PlayscreenState extends State<Playscreen> {
             body: Container(
               height: _size.height,
               width: _size.width,
-              child: _getStack(100),
+              child: _getStack(_lenght),
             ));
       },
     );
   }
 
+  _getStack(int limit) {
+    this._widgets = List<Widget>();
+    for (int i = 0; i < limit; i++) {
+      _widgets.add(_getCircle(i));
+    }
+    return Stack(children: _widgets);
+  }
+
   _getCircle(int value) {
+    Random random = Random();
 
     double limit = _size.width / 25;
-    double radius =  Random().nextInt(limit.round()).ceilToDouble();
-    double xPos = Random().nextInt((_size.width).round()).ceilToDouble();
-    double yPos = Random().nextInt((_size.height).round()).ceilToDouble();;
+    double radius = random.nextInt(limit.round()).ceilToDouble();
+    double xPos = random.nextInt((_size.width).round()).ceilToDouble();
+    double yPos = random.nextInt((_size.height).round()).ceilToDouble();
+    ;
 
-    if(radius < limit / 2) radius += limit / (3/2);
-    if(xPos > _size.width) xPos = _size.width - xPos * value;
-    if(yPos > _size.height) yPos = _size.height - yPos * value;
+    if (radius < limit / 2) radius += limit / (3 / 2);
+    if (xPos > _size.width) xPos = _size.width - xPos * value;
+    if (yPos > _size.height) yPos = _size.height - yPos * value;
 
-    return ClipOval(
-        child: Container(
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          this._widgets.removeAt(value);
+          this._lenght--;
+        });
+        if (_lenght == 1) _getDialog();
+      },
+      child: ClipOval(
+          child: Container(
             height: _size.height,
             width: _size.width,
-            color: (_colors[value%_colors.length]).withAlpha((value*100)%255),
-        ),
-        clipper:
-            CircleClip(
-                offset: Offset(xPos , yPos),
-                radius: radius
-            )
+            color: (_colors[value % _colors.length])
+                .withAlpha((value * 100) % 255),
+          ),
+          clipper: CircleClip(offset: Offset(xPos, yPos), radius: radius)),
     );
   }
 
-  _getStack(int limit){
-    List <Widget> widgets = List <Widget>();
-    for(int i = 0; i < limit; i++){
-      widgets.add(_getCircle(i));
-    }
-    return Stack(children: widgets);
+  _getDialog() {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: Column(
+            children: <Widget>[
+              Center(
+                  child: Text('Winner', style: TextStyle(fontFamily: "Elite"))),
+              Divider()
+            ],
+          ),
+          content: Text('Your score is ...'),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(Icons.check),
+                color: _colors[Random().nextInt(_colors.length)],
+                onPressed: () {
+                  setState(() {
+                    _widgets.add(_getCircle(0));
+                    _lenght++;
+                    Navigator.of(dialogContext).pop();
+                  });
+                }),
+          ],
+        );
+      },
+    );
   }
 }
