@@ -16,6 +16,8 @@ class _AuthscreenState extends State<Authscreen> {
 
   Size _size;
   double _corr;
+  String _userName = "";
+  double _space = 0.025;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,9 @@ class _AuthscreenState extends State<Authscreen> {
                   horizontal: _corr / 4, vertical: _corr / 10),
               children: <Widget>[
                 _getImage("logo", "assets/img/logo.png"),
-                SizedBox(height: _size.height * 0.1),
+                SizedBox(height: _size.height * _space),
+                Center(child: _getText(_userName, "Lato", color: Colors.grey),),
+                SizedBox(height: _size.height * _space),
                 _getTextFormField("Email"),
                 SizedBox(height: _size.height * 0.025),
                 _getTextFormField("Passord"),
@@ -110,18 +114,22 @@ class _AuthscreenState extends State<Authscreen> {
     );
   }
 
-  _getText(String label, String familiy) {
+  _getText(String label, String familiy,{Color color}) {
     return Text(label,
         style: TextStyle(
             fontFamily: familiy,
             fontWeight: FontWeight.w200,
             fontSize: _corr / 50,
-            color: Colors.white));
+            color: color ?? Colors.white));
   }
 
   _login() {
     _auth.handleSignIn(() {
       //Navigator.pushNamed(context, Playscreen.route);
+      setState(() {
+        _userName = "Curent User:    ${_auth.user.email}";
+        _space += _space;
+      });
     });
   }
 
