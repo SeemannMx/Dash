@@ -24,7 +24,8 @@ class _HomeControllState extends State<HomeControll> {
       children: <Widget>[
         _getStackItemTopTriangle(),
         _getStackItemBottomTriangle(),
-        _getStackItemtext(),
+        _getStackItemText(),
+        _getStackItemAuth()
       ],
     );
   }
@@ -66,7 +67,7 @@ class _HomeControllState extends State<HomeControll> {
     );
   }
 
-  _getStackItemtext() {
+  _getStackItemText() {
     return Center(
       child: GestureDetector(
         onTap: () {
@@ -83,5 +84,9 @@ class _HomeControllState extends State<HomeControll> {
             clipper: CenterText()),
       ),
     );
+  }
+
+  _getStackItemAuth(){
+    return Container();
   }
 }

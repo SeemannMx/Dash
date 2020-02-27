@@ -6,5 +6,27 @@
 </head>
 <body>
   <script src="main.dart.js" type="application/javascript"></script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+       https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyBDt9N4KFBn9wFhbLY5eDEhTy_X8mTlOK4",
+        authDomain: "dash-cae2b.firebaseapp.com",
+        databaseURL: "https://dash-cae2b.firebaseio.com",
+        projectId: "dash-cae2b",
+        storageBucket: "dash-cae2b.appspot.com",
+        messagingSenderId: "292389371127",
+        appId: "1:292389371127:web:c66ff51acd189d1dd167f2"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+  </script>
 </body>
 </html>
