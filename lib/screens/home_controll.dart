@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:text_to_path_maker/text_to_path_maker.dart';
 
 class HomeControll extends StatefulWidget {
   HomeControll({@required this.size});
@@ -19,7 +21,8 @@ class _HomeControllState extends State<HomeControll> {
     return Stack(
       children: <Widget>[
         _getStackItemTopTriangle(),
-        _getStackItemBottomTriangle()
+        _getStackItemBottomTriangle(),
+        _getStackItemtext()
       ],
     );
   }
@@ -55,6 +58,26 @@ class _HomeControllState extends State<HomeControll> {
     );
   }
 
+  _getStackItemtext(){
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          print("HomeControll onTap Bottom");
+          setState(() { onTapBottom = !onTapBottom; });
+        },
+        child: ClipPath(
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(8)),
+                  border: Border.all(color: Colors.pinkAccent, width: 1)),
+              height: widget.size.height / 2,
+              width: widget.size.width / 2,
+            ),
+            clipper: CenterText()),
+      ),
+    );
+  }
 }
 
 class TopTriangle extends CustomClipper<Path> {
@@ -77,6 +100,26 @@ class BottomTriangle extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     return p..moveTo(0.0, size.height)..lineTo(size.width / 2, 0)..lineTo(size.width, size.height)..close();
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) {
+    return true;
+  }
+}
+
+class CenterText extends CustomClipper<Path> {
+  Path p = Path();
+  PMFont font;
+
+  @override
+  Path getClip(Size size) {
+
+    rootBundle.load("assets/fonts/Prata-Regular.ttf").then(((ByteData data) {
+
+    }));
+
+    return null;
   }
 
   @override
