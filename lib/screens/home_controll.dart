@@ -25,7 +25,6 @@ class _HomeControllState extends State<HomeControll> {
         _getStackItemTopTriangle(),
         _getStackItemBottomTriangle(),
         _getStackItemText(),
-        _getStackItemAuth()
       ],
     );
   }
@@ -84,9 +83,5 @@ class _HomeControllState extends State<HomeControll> {
             clipper: CenterText()),
       ),
     );
-  }
-
-  _getStackItemAuth(){
-    return Container();
   }
 }
