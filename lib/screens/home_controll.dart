@@ -1,10 +1,8 @@
-import 'dart:html';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:text_to_path_maker/text_to_path_maker.dart';
+import 'package:flutter_dash/utils/clipper.dart';
 
 class HomeControll extends StatefulWidget {
   HomeControll({@required this.size});
@@ -20,7 +18,6 @@ class _HomeControllState extends State<HomeControll> {
   bool onTapBottom = false;
   bool onTapText = false;
 
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,11 +29,12 @@ class _HomeControllState extends State<HomeControll> {
     );
   }
 
-  _getStackItemTopTriangle(){
+  _getStackItemTopTriangle() {
     return GestureDetector(
       onTap: () {
-        print("HomeControll onTap Top");
-        setState(() { onTapTop = !onTapTop; });
+        setState(() {
+          onTapTop = !onTapTop;
+        });
       },
       child: ClipPath(
           child: Container(
@@ -47,28 +45,34 @@ class _HomeControllState extends State<HomeControll> {
           clipper: TopTriangle()),
     );
   }
-  _getStackItemBottomTriangle(){
+
+  _getStackItemBottomTriangle() {
     return GestureDetector(
       onTap: () {
-        print("HomeControll onTap Bottom");
-        setState(() { onTapBottom = !onTapBottom; });
+        setState(() {
+          onTapBottom = !onTapBottom;
+        });
       },
       child: ClipPath(
           child: Container(
             height: widget.size.height,
             width: widget.size.width,
-            color: (onTapBottom ? Colors.lightBlueAccent.shade400 : Colors.lightBlueAccent.shade100).withAlpha(100),
+            color: (onTapBottom
+                    ? Colors.lightBlueAccent.shade400
+                    : Colors.lightBlueAccent.shade100)
+                .withAlpha(100),
           ),
           clipper: BottomTriangle()),
     );
   }
 
-  _getStackItemtext(){
+  _getStackItemtext() {
     return Center(
       child: GestureDetector(
         onTap: () {
-          print("HomeControll onTap Text");
-          setState(() { onTapText = !onTapText; });
+          setState(() {
+            onTapText = !onTapText;
+          });
         },
         child: ClipPath(
             child: Container(
@@ -79,56 +83,5 @@ class _HomeControllState extends State<HomeControll> {
             clipper: CenterText()),
       ),
     );
-  }
-}
-
-class TopTriangle extends CustomClipper<Path> {
-  Path p = Path();
-
-  @override
-  Path getClip(Size size) {
-    return p..lineTo(size.width / 2, size.height)..lineTo(size.width, 0.0)..close();
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
-  }
-}
-
-class BottomTriangle extends CustomClipper<Path> {
-  Path p = Path();
-
-  @override
-  Path getClip(Size size) {
-    return p..moveTo(0.0, size.height)..lineTo(size.width / 2, 0)..lineTo(size.width, size.height)..close();
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
-  }
-}
-
-class CenterText extends CustomClipper<Path> {
-  Path _p = Path();
-
-  @override
-  Path getClip(Size size) {
-
-    // I N O V E X
-    List <Offset> points = [];
-    points.add(Offset(size.width / 2, 0));
-    points.add(Offset(size.width , size.height / 2));
-    points.add(Offset(size.width / 2, size.height));
-    points.add(Offset(0, size.height / 2));
-    _p.addPolygon(points, true);
-
-    return _p;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
   }
 }

@@ -21,14 +21,6 @@ class _HomescreenState extends State<Homescreen> {
     });
   }
 
-  _getDotText(String text, int limit) {
-    String result = "";
-    for (int i = 0; i < limit; i++) {
-      result += text;
-    }
-    return result;
-  }
-
   _getBody() {
     return Stack(
       children: <Widget>[
@@ -44,14 +36,20 @@ class _HomescreenState extends State<Homescreen> {
         style: TextStyle(fontFamily: "Dot", color: Colors.white.withAlpha(50)));
   }
 
-  _getStackItemList() {
-    return HomeList(
-      size: _size,
-    );
-  }
-
   _getStackItemHomeControll(){
     return HomeControll(size: _size);
+  }
+
+  _getStackItemList() {
+    return HomeList(size: _size,);
+  }
+
+  _getDotText(String text, int limit) {
+    String result = "";
+    for (int i = 0; i < limit; i++) {
+      result += text;
+    }
+    return result;
   }
 }
 
