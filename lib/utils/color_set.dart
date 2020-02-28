@@ -20,7 +20,7 @@ class ColorSet {
   List<Color> _gameColors = [
     Colors.grey,
     Colors.blue,
-    Colors.blueGrey,
+    Colors.blueGrey.withAlpha(50),
     Colors.blueAccent,
     Colors.lightBlueAccent,
     Colors.greenAccent,
@@ -28,7 +28,7 @@ class ColorSet {
     Colors.tealAccent,
     Colors.pinkAccent,
     Colors.white.withAlpha(50),
-    Colors.pink,
+    Colors.pink.withAlpha(100),
     Colors.purple.withAlpha(50),
     Colors.deepPurpleAccent
   ];

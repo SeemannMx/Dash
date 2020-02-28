@@ -25,19 +25,20 @@ class _PlayscreenState extends State<Playscreen> {
   List<Widget> _widgets = List<Widget>();
 
   double _maxLevel;
+  int _initLenght;
   double _level;
-
-  int _startLenght;
   int _lenght;
+  int _score;
 
   bool _started = false;
 
   @override
   void initState() {
+    this._score = 0;
     this._level = 100;
     this._maxLevel = _level;
     this._lenght = Random().nextInt(_level.round());
-    this._startLenght = _lenght;
+    this._initLenght = _lenght;
     super.initState();
   }
 
@@ -77,7 +78,7 @@ class _PlayscreenState extends State<Playscreen> {
                           ),
                             child: Center(
                               child: Text(
-                                "Scrore: ...",
+                                "Score ${_initLenght} / ${_score}",
                                 style: TextStyle(
                                     fontSize: _navBarHeight / 4,
                                     fontFamily: "Elite",
@@ -104,6 +105,7 @@ class _PlayscreenState extends State<Playscreen> {
                                 setState(() {
                                   _level = newLevel;
                                   _lenght = Random().nextInt(_level.round());
+                                  _initLenght = (_lenght - 1 <= 0 )? 0 : _lenght - 1;
                                 });
                               },
                             ),
@@ -146,6 +148,7 @@ class _PlayscreenState extends State<Playscreen> {
         setState(() {
           this._widgets.removeAt(value);
           this._lenght--;
+          this._score++;
           this._started = true;
         });
         if (_lenght == 1) _getDialog();
@@ -180,15 +183,17 @@ class _PlayscreenState extends State<Playscreen> {
               Divider()
             ],
           ),
-          content: Text('Your score is ...'),
+          content: Text('Your score is $_score from $_initLenght.', style: TextStyle(fontFamily: "Elite")),
           actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.check),
-                color: _set.gameColors[Random().nextInt(_set.gameColors.length)],
+                color: Colors.blueAccent,
                 onPressed: () {
                   setState(() {
-                    _widgets.add(_getCircle(0));
-                    _lenght++;
+                    _widgets.clear();
+                    _lenght = 0;
+                    _score = 0;
+                    _initLenght = 0;
                     _started = false;
                     Navigator.of(dialogContext).pop();
                   });
