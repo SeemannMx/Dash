@@ -17,7 +17,7 @@ class Playscreen extends StatefulWidget {
   _PlayscreenState createState() => _PlayscreenState();
 }
 
-class _PlayscreenState extends State<Playscreen> {
+class _PlayscreenState extends State<Playscreen> with TickerProviderStateMixin {
   StreamController _timeCtr = StreamController();
 
   Provider _provider = Provider();
@@ -71,9 +71,9 @@ class _PlayscreenState extends State<Playscreen> {
 
   @override
   dispose(){
+    super.dispose();
     _timeCtr.close();
     _reset();
-    super.dispose();
   }
 
   _getStack(int limit) {

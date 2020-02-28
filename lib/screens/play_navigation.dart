@@ -122,7 +122,7 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
   _getInfo(){
     return Container(
         margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
-        child: _getText("next"),
+        child: _getText("info"),
     );
   }
 
