@@ -3,12 +3,14 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:flutter_dash/utils/color_set.dart';
 import 'package:http/http.dart';
 
 class Provider {
   Provider._internal() {}
   static Provider _provider = Provider._internal();
 
+  ColorSet _set = ColorSet();
   Random _random = Random();
   Timer _timer;
 
@@ -18,14 +20,6 @@ class Provider {
   // URL
   String url_numbers = "http://numbersapi.com/random/math?json";
   String url = "http://localhost:5005";
-
-  // Colors
-  List<Color> _colors = [
-    Colors.blueAccent,
-    Colors.blueAccent[100],
-    Colors.blue[200],
-    Colors.pinkAccent
-  ];
 
   factory Provider({var p}) => _provider;
 
@@ -68,12 +62,12 @@ class Provider {
   }
 
   getColor(int index) {
-    index = _random.nextInt(_colors.length);
+    index = _random.nextInt(_set.tileColors.length);
     int last = index;
 
-    if (index == last && index == _colors.length) index - 1;
+    if (index == last && index == _set.tileColors.length) index - 1;
     if (index == last && index == 0) index + 1;
 
-    return _colors[index];
+    return _set.tileColors[index];
   }
 }
