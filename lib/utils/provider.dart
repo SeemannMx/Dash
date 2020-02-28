@@ -37,12 +37,39 @@ class Provider {
   }
 
   getDisplayTime(int tick){
-    _minutes = tick;
-    if(_minutes == 60) {
+    _minutes = tick ?? 0;
+    _minutes %= 60;
+
+    print("TIME: ${_hours} ${_minutes} TICK: ${tick}");
+
+    //if(_minutes == 59) {
+    if(_minutes % 60 == 0 && tick != null) {
+      print("");
+      print(_minutes);
+      print(_hours);
+      print("");
       _hours++;
-      _minutes = 0;
     }
-    return {"hour": _hours.toString(), "minutes": _minutes.toString()};
+    if(_hours == 24) _hours = 0;
+    return {"hour": _hours, "minutes": _minutes};
+  }
+
+  formatTime(Map time){
+    Map timeMap =  {"hour": "00", "minutes" : "00"};
+
+    if(time['minutes'] == null) timeMap['minutes'] = "00";
+
+    if(time['minutes'] < 10) {
+      timeMap['minutes'] = "0${time['minutes']}";
+    } else {
+      timeMap['minutes'] = "${time['minutes']}";
+    }
+    if(time['hour'] < 10) {
+      timeMap['hour'] = "0${time['hour']}";
+    } else {
+      timeMap['hour'] = "${time['hour']}";
+    }
+    return timeMap;
   }
 
   getColor(int index) {

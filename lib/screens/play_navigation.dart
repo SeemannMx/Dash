@@ -90,13 +90,12 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
     return StreamBuilder<Object>(
         stream: widget.timeCtr.stream,
         builder: (context, snapshot) {
-          String time = "00 : 00";
-          String hr = _provider.getDisplayTime(snapshot.data)["hour"];
-          String min = _provider.getDisplayTime(snapshot.data)["minutes"];
+          Map time = {"hour": 0, "minutes" : 0};
+          int tick = snapshot.data;
+          time = _provider.getDisplayTime(tick);
 
-          if(min != "null") time = "$hr : $min";
-          print("TIME: $time");
-          return _getText(time);
+          Map formatedTime = _provider.formatTime(time);
+          return _getText("${formatedTime["hour"]} : ${formatedTime["minutes"]}");
         });
   }
 
