@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dash/utils/provider.dart';
+import 'package:wifi_info_plugin/wifi_info_plugin.dart';
 
 class CustomBootomNavigationBar extends StatefulWidget {
 
@@ -122,7 +124,20 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
   _getInfo(){
     return Container(
         margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
-        child: _getText("info"),
+        child: FlatButton(
+          child: _getText("info"),
+          onPressed: (){
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    duration: Duration(seconds: 3),
+                    content: Container(
+                        height: _navBarHeight / 3,
+                        child: _getText("text")
+                    ),
+                  )
+              );
+          },
+        ),
     );
   }
 

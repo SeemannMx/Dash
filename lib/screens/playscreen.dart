@@ -71,7 +71,7 @@ class _PlayscreenState extends State<Playscreen> with TickerProviderStateMixin {
   }
 
   @override
-  dispose(){
+  dispose() {
     _timeCtr.close();
     _reset();
     super.dispose();
@@ -97,10 +97,6 @@ class _PlayscreenState extends State<Playscreen> with TickerProviderStateMixin {
           alignment: Alignment.bottomCenter,
           child: _getBottomNavigationBar(),
         ));
-    this._widgets.add(PlayAnimation(
-          size: _size,
-        )
-      );
   }
 
   _getBottomNavigationBar() {

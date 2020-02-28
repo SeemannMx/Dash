@@ -19,9 +19,6 @@ class _PlayAnimationState extends State<PlayAnimation>  with TickerProviderState
 
   @override
   void initState() {
-    _controller = AnimationController(vsync: this, duration: Duration(seconds: 5));
-    _animation = Tween<Offset>(begin: Offset(0,0), end: Offset(1,0)).animate(_controller);
-    _controller.forward();
     super.initState();
   }
 
@@ -33,16 +30,16 @@ class _PlayAnimationState extends State<PlayAnimation>  with TickerProviderState
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      child: SlideTransition(
-        position: _animation,
+    return GestureDetector(
+      onTap: () {},
+      child: ClipPath(
         child: Container(
         height: widget.size.height,
         width:  widget.size.width,
-        color: Colors.pinkAccent.withAlpha(150),
-    ),
+        color: Colors.lightBlueAccent.withAlpha(120),
       ),
-      clipper: ArrowTriangle(),
+        clipper: ArrowTriangle(),
+      ),
     );
   }
 }
