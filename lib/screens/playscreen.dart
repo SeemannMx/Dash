@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dash/screens/dialog.dart';
 import 'package:flutter_dash/screens/startscreen.dart';
 import 'package:flutter_dash/utils/clipper.dart';
 import 'package:flutter_dash/utils/color_set.dart';
@@ -173,32 +174,20 @@ class _PlayscreenState extends State<Playscreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(_corr / 100))),
-          title: Column(
-            children: <Widget>[
-              Center(
-                  child: Text('Winner', style: TextStyle(fontFamily: "Elite"))),
-              Divider()
-            ],
-          ),
-          content: Text('Your score is $_score from $_initLenght.', style: TextStyle(fontFamily: "Elite")),
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.check),
-                color: Colors.blueAccent,
-                onPressed: () {
-                  setState(() {
-                    _widgets.clear();
-                    _lenght = 0;
-                    _score = 0;
-                    _initLenght = 0;
-                    _started = false;
-                    Navigator.of(dialogContext).pop();
-                  });
-                }),
-          ],
+        return CustomDialog(
+          corr: _corr,
+          result: [_initLenght, _score],
+          callback: () {
+            setState(() {
+              _widgets.clear();
+              _lenght = 0;
+              _level = 1;
+              _score = 0;
+              _initLenght = 0;
+              _started = false;
+              Navigator.of(dialogContext).pop();
+            });
+            },
         );
       },
     );
