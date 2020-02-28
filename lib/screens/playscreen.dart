@@ -103,6 +103,7 @@ class _PlayscreenState extends State<Playscreen> {
                                 if(_started) return;
                                 setState(() {
                                   _level = newLevel;
+                                  _lenght = Random().nextInt(_level.round());
                                 });
                               },
                             ),
