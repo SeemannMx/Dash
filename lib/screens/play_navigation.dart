@@ -75,11 +75,11 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
       child: Container(
         color: Colors.grey.withAlpha(150),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
             _getTime(),
             _getSlider(),
-            _getText("next"),
+            _getInfo()
           ],
         ),
       ),
@@ -87,30 +87,42 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
   }
 
   _getTime(){
-    return StreamBuilder<Object>(
-        stream: widget.timeCtr.stream,
-        builder: (context, snapshot) {
-          Map time = {"hour": 0, "minutes" : 0};
-          int tick = snapshot.data;
-          time = _provider.getDisplayTime(tick);
-
-          Map formatedTime = _provider.formatTime(time);
-          return _getText("${formatedTime["hour"]} : ${formatedTime["minutes"]}");
-        });
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
+      child: StreamBuilder<Object>(
+          stream: widget.timeCtr.stream,
+          builder: (context, snapshot) {
+            _provider.getDisplayTime(snapshot.data as int);
+            Map time = _provider.getDisplayTime(snapshot.data as int);
+            return _getText(
+                    "${_provider.formatTime(time)["hour"]} : "
+                    "${_provider.formatTime(time)["minutes"]}"
+            );
+          }),
+    );
   }
 
   _getSlider() {
-    return Slider(
-        min: 1,
-        max: widget.sliderConfig["maxLevel"],
-        value: widget.sliderConfig["level"],
-        activeColor: !(widget.sliderConfig["started"])
-            ? Colors.pinkAccent
-            : Colors.grey,
-        inactiveColor: !(widget.sliderConfig["started"])
-            ? Colors.yellowAccent
-            : Colors.black54,
-        onChanged: widget.sliderCallback
+    return Expanded(
+      child: Slider(
+          min: 1,
+          max: widget.sliderConfig["maxLevel"],
+          value: widget.sliderConfig["level"],
+          activeColor: !(widget.sliderConfig["started"])
+              ? Colors.pinkAccent
+              : Colors.grey,
+          inactiveColor: !(widget.sliderConfig["started"])
+              ? Colors.yellowAccent
+              : Colors.black54,
+          onChanged: widget.sliderCallback
+      ),
+    );
+  }
+
+  _getInfo(){
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
+        child: _getText("next"),
     );
   }
 

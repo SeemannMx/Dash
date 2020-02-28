@@ -40,17 +40,9 @@ class Provider {
     _minutes = tick ?? 0;
     _minutes %= 60;
 
-    print("TIME: ${_hours} ${_minutes} TICK: ${tick}");
-
-    //if(_minutes == 59) {
-    if(_minutes % 60 == 0 && tick != null) {
-      print("");
-      print(_minutes);
-      print(_hours);
-      print("");
-      _hours++;
-    }
+    if(_minutes % 60 == 0 && tick != null) _hours++;
     if(_hours == 24) _hours = 0;
+
     return {"hour": _hours, "minutes": _minutes};
   }
 

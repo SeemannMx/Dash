@@ -13,6 +13,8 @@ class Helper {
   calculateLine(Size size) => _limit.create(size);
 
   isLeft(Offset pos) => (pos.dy < _limit.getYPointLine(pos.dx)) ? true : false;
+
+
 }
 
 class Line {

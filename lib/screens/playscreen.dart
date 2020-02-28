@@ -71,8 +71,8 @@ class _PlayscreenState extends State<Playscreen> {
 
   @override
   dispose(){
-    _provider.stopTimer();
     _timeCtr.close();
+    _reset();
     super.dispose();
   }
 
