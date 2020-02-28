@@ -1,15 +1,19 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dash/utils/provider.dart';
 
 class CustomBootomNavigationBar extends StatefulWidget {
 
   CustomBootomNavigationBar(
-      {@required this.corr, @required this.result, @required this.sliderConfig, @required this.sliderCallback});
+      {@required this.corr, @required this.timeCtr, @required this.result, @required this.sliderConfig, @required this.sliderCallback});
 
   double corr;
   var sliderCallback;
   var result;
   Map sliderConfig;
+  StreamController timeCtr;
 
   @override
   _CustomBootomNavigationBarState createState() =>
@@ -18,6 +22,7 @@ class CustomBootomNavigationBar extends StatefulWidget {
 
 class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
 
+  Provider _provider = Provider();
   double _navBarHeight;
 
   @override
@@ -70,15 +75,29 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
       child: Container(
         color: Colors.grey.withAlpha(150),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            _getText("back"),
+            _getTime(),
             _getSlider(),
             _getText("next"),
           ],
         ),
       ),
     );
+  }
+
+  _getTime(){
+    return StreamBuilder<Object>(
+        stream: widget.timeCtr.stream,
+        builder: (context, snapshot) {
+          String time = "00 : 00";
+          String hr = _provider.getDisplayTime(snapshot.data)["hour"];
+          String min = _provider.getDisplayTime(snapshot.data)["minutes"];
+
+          if(min != "null") time = "$hr : $min";
+          print("TIME: $time");
+          return _getText(time);
+        });
   }
 
   _getSlider() {

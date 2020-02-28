@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -17,6 +18,8 @@ class Playscreen extends StatefulWidget {
 }
 
 class _PlayscreenState extends State<Playscreen> {
+  StreamController _timeCtr = StreamController();
+
   Provider _provider = Provider();
   ColorSet _set = ColorSet();
   Random _random = Random();
@@ -66,6 +69,13 @@ class _PlayscreenState extends State<Playscreen> {
     );
   }
 
+  @override
+  dispose(){
+    _provider.stopTimer();
+    _timeCtr.close();
+    super.dispose();
+  }
+
   _getStack(int limit) {
     this._widgets = List<Widget>();
 
@@ -91,6 +101,7 @@ class _PlayscreenState extends State<Playscreen> {
   _getBottomNavigationBar() {
     return CustomBootomNavigationBar(
       corr: _corr,
+      timeCtr: _timeCtr,
       result: [_initLenght, _score],
       sliderConfig: {
         "maxLevel": _maxLevel,
@@ -113,6 +124,7 @@ class _PlayscreenState extends State<Playscreen> {
     return GestureDetector(
       onTap: () {
         setState(() {
+          this._provider.startTimer(_timeCtr);
           this._widgets.removeAt(value);
           this._lenght--;
           this._score++;
@@ -122,6 +134,7 @@ class _PlayscreenState extends State<Playscreen> {
       },
       onDoubleTap: () {
         this._started = false;
+        this._provider.stopTimer();
         Navigator.pushNamed(context, Startscreen.route);
       },
       child: ClipOval(
@@ -170,6 +183,7 @@ class _PlayscreenState extends State<Playscreen> {
   }
 
   _reset() {
+    _provider.stopTimer();
     _widgets.clear();
     _lenght = 0;
     _level = 1;

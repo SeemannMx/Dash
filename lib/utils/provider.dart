@@ -14,51 +14,35 @@ class Provider {
   Random _random = Random();
   Timer _timer;
 
-  var _value;
   var _runner = 0;
-
-  // URL
-  String url_numbers = "http://numbersapi.com/random/math?json";
-  String url = "http://localhost:5005";
+  int _minutes = 0;
+  int _hours = 0;
 
   factory Provider({var p}) => _provider;
 
-  run(StreamController ctr, limit, intervall) {
+  startTimer(StreamController ctr){
     if (_runner == 0) {
       print('Timer started ...');
-      _timer = Timer.periodic(Duration(seconds: intervall), (_) {
-        _getTime(ctr, limit);
+      _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+        ctr.sink.add(timer.tick);
       });
       _runner++;
     }
   }
 
-  _getTime(StreamController ctr, int limit) async {
-    _cancelTimer(limit);
-
-    print("send request to  $url_numbers");
-    await get(url_numbers).then((_t) {
-      _value = jsonDecode(_t.body);
-      ctr.sink.add(_value['number']);
-
-      print("response:  ${_value['number']}");
-    }).timeout(Duration(seconds: 10));
-  }
-
-  _cancelTimer(int limit) {
-    if (_timer.tick > limit) {
-      _timer.cancel();
-      print('Timer stoped at Tick: ${_timer.tick}');
-    }
-  }
-
-  clear() {
+  stopTimer() {
+    _minutes = 0;
+    _hours = 0;
     if (_timer != null) _timer.cancel();
   }
 
-  chatbot() async {
-    //print("send request to rasa $url");
-    //await get(url).then((response) => print(response.body));
+  getDisplayTime(int tick){
+    _minutes = tick;
+    if(_minutes == 60) {
+      _hours++;
+      _minutes = 0;
+    }
+    return {"hour": _hours.toString(), "minutes": _minutes.toString()};
   }
 
   getColor(int index) {
