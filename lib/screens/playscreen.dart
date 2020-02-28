@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dash/screens/dialog.dart';
+import 'package:flutter_dash/screens/play_navigation.dart';
 import 'package:flutter_dash/screens/startscreen.dart';
 import 'package:flutter_dash/utils/clipper.dart';
 import 'package:flutter_dash/utils/color_set.dart';
@@ -24,6 +25,7 @@ class _PlayscreenState extends State<Playscreen> {
   double _corr;
   double _navBarHeight;
   List<Widget> _widgets = List<Widget>();
+  Map _circleConfig;
 
   double _maxLevel;
   int _initLenght;
@@ -47,9 +49,10 @@ class _PlayscreenState extends State<Playscreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        this._size = Size(constraints.biggest.width, constraints.biggest.height);
+        this._size =
+            Size(constraints.biggest.width, constraints.biggest.height);
         this._corr = (_size.width + _size.height) / 2;
-        this._navBarHeight =  _corr / 10;
+        this._navBarHeight = _corr / 10;
 
         return Scaffold(
           backgroundColor: Colors.blueGrey,
@@ -58,68 +61,6 @@ class _PlayscreenState extends State<Playscreen> {
             width: _size.width,
             child: _getStack(_lenght),
           ),
-          bottomNavigationBar: Container(
-            height:_navBarHeight,
-            //color: Colors.white,
-            child: Stack(
-              children: <Widget>[
-                Column(
-                  children: <Widget>[
-                    Center(
-                        child:
-                        Container(
-                          width: _size.width / 5,
-                          padding: EdgeInsets.only(top: _navBarHeight / 8, bottom:  _navBarHeight / 16),
-                          decoration: BoxDecoration(
-                              color: Colors.grey.withAlpha(50),
-                              borderRadius: BorderRadius.only(
-                                  topLeft:  Radius.circular(_corr / 50),
-                                  topRight: Radius.circular(_corr / 50)
-                              )
-                          ),
-                            child: Center(
-                              child: Text(
-                                "Score ${_initLenght} / ${_score}",
-                                style: TextStyle(
-                                    fontSize: _navBarHeight / 4,
-                                    fontFamily: "Elite",
-                                    color: Colors.white.withAlpha(150)),
-                              ),
-                            )
-                        )
-                    ),
-                    Expanded(
-                      child: Container(
-                        color: Colors.grey.withAlpha(150),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            Text("MY"),
-                            Slider(
-                              min: 1,
-                              max: _maxLevel,
-                              value: _level,
-                              activeColor: !_started ? Colors.pinkAccent : Colors.grey,
-                              inactiveColor: !_started ? Colors.yellowAccent : Colors.black54,
-                              onChanged: (newLevel) {
-                                if(_started) return;
-                                setState(() {
-                                  _level = newLevel;
-                                  _lenght = Random().nextInt(_level.round());
-                                  _initLenght = (_lenght - 1 <= 0 )? 0 : _lenght - 1;
-                                });
-                              },
-                            ),
-                            Text("WORLD")
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                )
-              ],
-            ),
-          ),
         );
       },
     );
@@ -127,23 +68,48 @@ class _PlayscreenState extends State<Playscreen> {
 
   _getStack(int limit) {
     this._widgets = List<Widget>();
-    for (int i = 0; i < limit; i++) {
-      this._widgets.add(_getCircle(i));
-    }
+
+    _createBodyWidgets(limit);
+    _createBottomNavigationBar();
+
     return Stack(children: _widgets);
   }
 
+  _createBodyWidgets(int limit) {
+    for (int i = 0; i < limit; i++) {
+      this._widgets.add(_getCircle(i));
+    }
+  }
+
+  _createBottomNavigationBar() {
+    this._widgets.add(Align(
+          alignment: Alignment.bottomCenter,
+          child: _getBottomNavigationBar(),
+        ));
+  }
+
+  _getBottomNavigationBar() {
+    return CustomBootomNavigationBar(
+      corr: _corr,
+      result: [_initLenght, _score],
+      sliderConfig: {
+        "maxLevel": _maxLevel,
+        "level": _level,
+        "started": _started
+      },
+      sliderCallback: (newLevel) {
+        if (_started) return;
+        setState(() {
+          _level = newLevel;
+          _lenght = Random().nextInt(_level.round());
+          _initLenght = (_lenght - 1 <= 0) ? 0 : _lenght - 1;
+        });
+      },
+    );
+  }
+
   _getCircle(int value) {
-
-    double limit = _size.width / 25;
-    double radius = _random.nextInt(limit.round()).ceilToDouble();
-    double xPos = _random.nextInt((_size.width).round()).ceilToDouble();
-    double yPos = _random.nextInt((_size.height).round()).ceilToDouble();
-
-    if (radius < limit / 2) radius += limit / (3 / 2);
-    if (xPos > _size.width) xPos = _size.width - xPos * value;
-    if (yPos > (_size.height - _navBarHeight)) yPos = _size.height - yPos * value;
-
+    this._circleConfig = _getCircleConfig(value);
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -165,7 +131,9 @@ class _PlayscreenState extends State<Playscreen> {
             color: (_set.gameColors[value % _set.gameColors.length])
                 .withAlpha((value * 100) % 255),
           ),
-          clipper: CircleClip(offset: Offset(xPos, yPos), radius: radius)),
+          clipper: CircleClip(
+              offset: _circleConfig["offset"],
+              radius: _circleConfig["radius"])),
     );
   }
 
@@ -179,17 +147,34 @@ class _PlayscreenState extends State<Playscreen> {
           result: [_initLenght, _score],
           callback: () {
             setState(() {
-              _widgets.clear();
-              _lenght = 0;
-              _level = 1;
-              _score = 0;
-              _initLenght = 0;
-              _started = false;
+              _reset();
               Navigator.of(dialogContext).pop();
             });
-            },
+          },
         );
       },
     );
+  }
+
+  _getCircleConfig(value) {
+    double limit = _size.width / 25;
+    double radius = _random.nextInt(limit.round()).ceilToDouble();
+    double xPos = _random.nextInt((_size.width).round()).ceilToDouble();
+    double yPos = _random.nextInt((_size.height).round()).ceilToDouble();
+
+    if (radius < limit / 2) radius += limit / (3 / 2);
+    if (xPos > _size.width) xPos = _size.width - xPos * value;
+    if (yPos > (_size.height - _navBarHeight))
+      yPos = _size.height - yPos * value;
+    return {"offset": Offset(xPos, yPos), "radius": radius};
+  }
+
+  _reset() {
+    _widgets.clear();
+    _lenght = 0;
+    _level = 1;
+    _score = 0;
+    _initLenght = 0;
+    _started = false;
   }
 }
