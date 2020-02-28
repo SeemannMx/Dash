@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dash/screens/dialog.dart';
+import 'package:flutter_dash/screens/play_animation.dart';
 import 'package:flutter_dash/screens/play_navigation.dart';
 import 'package:flutter_dash/screens/startscreen.dart';
 import 'package:flutter_dash/utils/clipper.dart';
@@ -17,7 +18,7 @@ class Playscreen extends StatefulWidget {
   _PlayscreenState createState() => _PlayscreenState();
 }
 
-class _PlayscreenState extends State<Playscreen> {
+class _PlayscreenState extends State<Playscreen> with TickerProviderStateMixin {
   StreamController _timeCtr = StreamController();
 
   Provider _provider = Provider();
@@ -70,7 +71,7 @@ class _PlayscreenState extends State<Playscreen> {
   }
 
   @override
-  dispose(){
+  dispose() {
     _timeCtr.close();
     _reset();
     super.dispose();

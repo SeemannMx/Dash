@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -122,7 +123,20 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
   _getInfo(){
     return Container(
         margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
-        child: _getText("next"),
+        child: FlatButton(
+          child: _getText("info"),
+          onPressed: (){
+              Scaffold.of(context).showSnackBar(
+                  SnackBar(
+                    duration: Duration(seconds: 3),
+                    content: Container(
+                        height: _navBarHeight / 3,
+                        child: _getText("There are no information available.")
+                    ),
+                  )
+              );
+          },
+        ),
     );
   }
 

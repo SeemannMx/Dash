@@ -62,10 +62,24 @@ class CircleClip extends CustomClipper<Rect> {
   @override
   Rect getClip(Size size) {
     return Rect.fromCircle(center: offset, radius: radius);
-
-    return  Rect.fromLTRB(offset.dx, offset.dy, size.width, size.height);
   }
 
   @override
   bool shouldReclip(CustomClipper<Rect> old) => true;
+}
+
+class ArrowTriangle extends CustomClipper<Path> {
+  Path _p = Path();
+
+  @override
+  Path getClip(Size size) {
+    return _p
+      ..moveTo(0 , size.height / 4)
+      ..lineTo(0, size.width / 4)
+      ..lineTo(size.width / 8, size.height / 4 + (size.height / 4)/2)
+      ..close();
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => true;
 }
