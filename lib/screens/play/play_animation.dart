@@ -32,7 +32,8 @@ class _PlayAnimationState extends State<PlayAnimation> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        this._size = Size(constraints.biggest.width, constraints.biggest.height);
+        this._size =
+            Size(constraints.biggest.width, constraints.biggest.height);
         this._corr = (_size.width + _size.height) / 2;
 
         return Scaffold(
@@ -60,7 +61,7 @@ class _PlayAnimationState extends State<PlayAnimation> {
                 onTap: () {
                   setState(() {
                     this._count = this._random.nextInt(10);
-                    this._colorIndex = _count%_colorSet.gameColors.length;
+                    this._colorIndex = _count % _colorSet.gameColors.length;
                     this._colorItem = _colorSet.gameColors[_colorIndex];
                   });
                 },
@@ -73,8 +74,7 @@ class _PlayAnimationState extends State<PlayAnimation> {
   }
 
   _getGrid() {
-
-    if(_count == null || _count <= 0) _count = 4;
+    if (_count == null || _count <= 0) _count = 4;
 
     return GridView.count(
       crossAxisCount: _count,
@@ -85,19 +85,25 @@ class _PlayAnimationState extends State<PlayAnimation> {
   }
 
   _getGridItem(int index) {
-    return Container(
-      margin: EdgeInsets.all(_corr / (_count * 50)),
-      child: AnimatedContainer(
-          duration: Duration(seconds: 3),
-          color: _colorItem,
-          child: _getGridText(index)),
-    );
+    return AnimatedContainer(
+        margin: EdgeInsets.all(_corr / (_count * 50)),
+        decoration: BoxDecoration(
+            color: _colorItem,
+            border: Border.all(color: Colors.white, width: 1),
+            borderRadius: BorderRadius.all(
+              Radius.circular(_corr / 50),
+            )),
+        duration: Duration(seconds: 2),
+        child: _getGridText(index));
   }
 
   _getGridText(int index) {
     return Center(
       child: Text(
-        'Item $index',
+        '$index',
+        style: TextStyle(
+            fontSize: _corr / (_count * 4),
+            fontFamily: "Dot"),
       ),
     );
   }
