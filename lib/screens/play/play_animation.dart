@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_dash/screens/start/startscreen.dart';
 import 'package:flutter_dash/utils/clipper.dart';
 import 'package:flutter_dash/utils/color_set.dart';
 
@@ -17,10 +18,14 @@ class _PlayAnimationState extends State<PlayAnimation> {
   Color _colorItem = Colors.amber;
   Size _size;
   double _corr;
+  double _radius;
+  double _fontsize;
 
+  int _runner = 0;
   int _count;
   int _colorIndex = 0;
   Random _random = Random();
+  Duration _duration = Duration(seconds: 2);
 
   @override
   void initState() {
@@ -36,6 +41,11 @@ class _PlayAnimationState extends State<PlayAnimation> {
             Size(constraints.biggest.width, constraints.biggest.height);
         this._corr = (_size.width + _size.height) / 2;
 
+        if (_runner++ == 0) {
+          this._radius = _corr / 75;
+          this._fontsize = _corr / (_count * 4);
+        }
+
         return Scaffold(
           backgroundColor: _colorBackground,
           body: Stack(
@@ -48,29 +58,33 @@ class _PlayAnimationState extends State<PlayAnimation> {
 
   _getCenterTile() {
     return Center(
-        child: Container(
-            decoration: BoxDecoration(
-                color: Colors.pinkAccent.withAlpha(100),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(_corr / 75),
-                )),
-            child: Padding(
-              padding: EdgeInsets.only(
-                  top: _corr / 35, left: _corr / 40, right: _corr / 40),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    this._count = this._random.nextInt(10);
-                    this._colorIndex = _count % _colorSet.gameColors.length;
-                    this._colorItem = _colorSet.gameColors[_colorIndex];
-                  });
-                },
-                child: Text(
-                  "$_count : $_colorIndex",
-                  style: TextStyle(fontSize: _corr / 10, fontFamily: "Elite"),
-                ),
+      child: AnimatedContainer(
+          duration: _duration,
+          decoration: BoxDecoration(
+              color: Colors.pinkAccent.withAlpha(100),
+              border: Border.all(color: Colors.amber, width: 1),
+              borderRadius: BorderRadius.all(
+                Radius.circular(_radius),
+              )),
+          child: Padding(
+            padding: EdgeInsets.only(
+                top: _corr / 35, left: _corr / 40, right: _corr / 40),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  this._count = this._random.nextInt(10);
+                  this._colorIndex = _count % _colorSet.gameColors.length;
+                  this._colorItem = _colorSet.gameColors[_colorIndex];
+                  this._radius = (_corr * _count) / 100;
+                });
+              },
+              child: Text(
+                "$_count : $_colorIndex",
+                style: TextStyle(fontSize: _corr / 10, fontFamily: "Elite"),
               ),
-            )));
+            ),
+          )),
+    );
   }
 
   _getGrid() {
@@ -86,6 +100,7 @@ class _PlayAnimationState extends State<PlayAnimation> {
 
   _getGridItem(int index) {
     return AnimatedContainer(
+        duration: _duration,
         margin: EdgeInsets.all(_corr / (_count * 50)),
         decoration: BoxDecoration(
             color: _colorItem,
@@ -93,17 +108,19 @@ class _PlayAnimationState extends State<PlayAnimation> {
             borderRadius: BorderRadius.all(
               Radius.circular(_corr / 50),
             )),
-        duration: Duration(seconds: 2),
         child: _getGridText(index));
   }
 
   _getGridText(int index) {
     return Center(
-      child: Text(
-        '$index',
-        style: TextStyle(
-            fontSize: _corr / (_count * 4),
-            fontFamily: "Dot"),
+      child: GestureDetector(
+        onDoubleTap: () {
+          Navigator.pushNamed(context, Startscreen.route);
+        },
+        child: Text(
+          '$index',
+          style: TextStyle(fontSize: _fontsize, fontFamily: "Dot"),
+        ),
       ),
     );
   }
