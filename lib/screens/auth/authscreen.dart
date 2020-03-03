@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dash/screens/homescreen.dart';
-import 'package:flutter_dash/screens/playscreen.dart';
+import 'package:flutter_dash/screens/home/homescreen.dart';
+import 'package:flutter_dash/screens/play/playscreen.dart';
 import 'package:flutter_dash/utils/authenticator.dart';
 
 class Authscreen extends StatefulWidget {

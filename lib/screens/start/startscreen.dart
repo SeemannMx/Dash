@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_dash/screens/authscreen.dart';
-import 'package:flutter_dash/screens/playscreen.dart';
+import 'package:flutter_dash/screens/auth/authscreen.dart';
+import 'package:flutter_dash/screens/play/playscreen.dart';
 import 'package:flutter_dash/utils/helper.dart';
-import 'package:flutter_dash/screens/homescreen.dart';
-import 'package:flutter_dash/screens/start_painter.dart';
+import 'package:flutter_dash/screens/home/homescreen.dart';
+import 'package:flutter_dash/screens/start/start_painter.dart';
 
 class Startscreen extends StatefulWidget {
   static String route = "/start";

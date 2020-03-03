@@ -3,10 +3,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dash/screens/dialog.dart';
-import 'package:flutter_dash/screens/play_animation.dart';
-import 'package:flutter_dash/screens/play_navigation.dart';
-import 'package:flutter_dash/screens/startscreen.dart';
+import 'package:flutter_dash/screens/play/dialog.dart';
+import 'package:flutter_dash/screens/play/play_animation.dart';
+import 'package:flutter_dash/screens/play/play_navigation.dart';
+import 'package:flutter_dash/screens/start/startscreen.dart';
 import 'package:flutter_dash/utils/clipper.dart';
 import 'package:flutter_dash/utils/color_set.dart';
 import 'package:flutter_dash/utils/provider.dart';
@@ -152,6 +152,7 @@ class _PlayscreenState extends State<Playscreen> with TickerProviderStateMixin {
   }
 
   _getDialog() {
+    _provider.stopTimer();
     return showDialog(
       context: context,
       barrierDismissible: false,
@@ -184,7 +185,6 @@ class _PlayscreenState extends State<Playscreen> with TickerProviderStateMixin {
   }
 
   _reset() {
-    _provider.stopTimer();
     _widgets.clear();
     _lenght = 0;
     _level = 1;

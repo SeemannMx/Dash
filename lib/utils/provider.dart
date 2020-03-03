@@ -13,6 +13,7 @@ class Provider {
   ColorSet _set = ColorSet();
   Random _random = Random();
   Timer _timer;
+  String time;
 
   var _runner = 0;
   int _minutes = 0;

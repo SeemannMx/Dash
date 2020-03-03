@@ -30,14 +30,18 @@ class _PlayAnimationState extends State<PlayAnimation>  with TickerProviderState
 
   @override
   Widget build(BuildContext context) {
+    return _getTriangle();
+  }
+
+  _getTriangle(){
     return GestureDetector(
       onTap: () {},
       child: ClipPath(
         child: Container(
-        height: widget.size.height,
-        width:  widget.size.width,
-        color: Colors.lightBlueAccent.withAlpha(120),
-      ),
+          height: widget.size.height,
+          width:  widget.size.width,
+          color: Colors.lightBlueAccent.withAlpha(120),
+        ),
         clipper: ArrowTriangle(),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dash/screens/home_controll.dart';
+import 'package:flutter_dash/screens/home/home_controll.dart';
 
 class Homescreen extends StatefulWidget {
   static String route = "/home";

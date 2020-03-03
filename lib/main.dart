@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_dash/screens/authscreen.dart';
-import 'package:flutter_dash/screens/homescreen.dart';
-import 'package:flutter_dash/screens/playscreen.dart';
-import 'package:flutter_dash/screens/startscreen.dart';
+import 'package:flutter_dash/screens/auth/authscreen.dart';
+import 'package:flutter_dash/screens/home/homescreen.dart';
+import 'package:flutter_dash/screens/play/playscreen.dart';
+import 'package:flutter_dash/screens/start/startscreen.dart';
 
 
 void main() => runApp(DashApp());

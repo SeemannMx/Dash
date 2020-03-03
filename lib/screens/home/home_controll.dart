@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_dash/screens/startscreen.dart';
+import 'package:flutter_dash/screens/start/startscreen.dart';
 import 'package:flutter_dash/utils/authenticator.dart';
 import 'package:flutter_dash/utils/clipper.dart';
 

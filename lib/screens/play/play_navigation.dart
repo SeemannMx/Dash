@@ -6,9 +6,12 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_dash/utils/provider.dart';
 
 class CustomBootomNavigationBar extends StatefulWidget {
-
   CustomBootomNavigationBar(
-      {@required this.corr, @required this.timeCtr, @required this.result, @required this.sliderConfig, @required this.sliderCallback});
+      {@required this.corr,
+      @required this.timeCtr,
+      @required this.result,
+      @required this.sliderConfig,
+      @required this.sliderCallback});
 
   double corr;
   var sliderCallback;
@@ -22,9 +25,9 @@ class CustomBootomNavigationBar extends StatefulWidget {
 }
 
 class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
-
   Provider _provider = Provider();
   double _navBarHeight;
+  Map _time;
 
   @override
   void initState() {
@@ -40,10 +43,7 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
       child: Stack(
         children: <Widget>[
           Column(
-            children: <Widget>[
-              _getScore(),
-              _getControllbar()
-            ],
+            children: <Widget>[_getScore(), _getControllbar()],
           )
         ],
       ),
@@ -53,22 +53,17 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
   _getScore() {
     return Container(
         width: _navBarHeight * 2,
-        padding: EdgeInsets.only(top: _navBarHeight / 7, bottom: _navBarHeight / 16),
+        padding:
+            EdgeInsets.only(top: _navBarHeight / 7, bottom: _navBarHeight / 16),
         decoration: BoxDecoration(
             color: Colors.grey.withAlpha(50),
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(widget.corr / 50),
-                topRight: Radius.circular(widget.corr / 50)
-            )
-        ),
+                topRight: Radius.circular(widget.corr / 50))),
         child: Center(
-            child: _getText(
-                "Score ${widget.result[0]} / ${widget.result[1]}",
+            child: _getText("Score ${widget.result[0]} / ${widget.result[1]}",
                 fontsize: _navBarHeight / 4,
-                color: Colors.white.withAlpha(150)
-            )
-    )
-    );
+                color: Colors.white.withAlpha(150))));
   }
 
   _getControllbar() {
@@ -77,28 +72,22 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
         color: Colors.grey.withAlpha(150),
         child: Row(
           //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            _getTime(),
-            _getSlider(),
-            _getInfo()
-          ],
+          children: <Widget>[_getTime(), _getSlider(), _getInfo()],
         ),
       ),
     );
   }
 
-  _getTime(){
+  _getTime() {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
       child: StreamBuilder<Object>(
           stream: widget.timeCtr.stream,
           builder: (context, snapshot) {
-            _provider.getDisplayTime(snapshot.data as int);
-            Map time = _provider.getDisplayTime(snapshot.data as int);
-            return _getText(
-                    "${_provider.formatTime(time)["hour"]} : "
-                    "${_provider.formatTime(time)["minutes"]}"
-            );
+           this._time = _provider.getDisplayTime(snapshot.data as int);
+           this._provider.time =  "${_provider.formatTime(_time)["hour"]} : "
+                                  "${_provider.formatTime(_time)["minutes"]}";
+            return _getText(_provider.time);
           }),
     );
   }
@@ -115,34 +104,29 @@ class _CustomBootomNavigationBarState extends State<CustomBootomNavigationBar> {
           inactiveColor: !(widget.sliderConfig["started"])
               ? Colors.yellowAccent
               : Colors.black54,
-          onChanged: widget.sliderCallback
+          onChanged: widget.sliderCallback),
+    );
+  }
+
+  _getInfo() {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
+      child: FlatButton(
+        child: _getText("info"),
+        onPressed: () {
+          Scaffold.of(context).showSnackBar(SnackBar(
+            duration: Duration(seconds: 3),
+            content: Container(
+                height: _navBarHeight / 3,
+                child: _getText("There are no information available.")),
+          ));
+        },
       ),
     );
   }
 
-  _getInfo(){
-    return Container(
-        margin: EdgeInsets.symmetric(horizontal: widget.corr / 10),
-        child: FlatButton(
-          child: _getText("info"),
-          onPressed: (){
-              Scaffold.of(context).showSnackBar(
-                  SnackBar(
-                    duration: Duration(seconds: 3),
-                    content: Container(
-                        height: _navBarHeight / 3,
-                        child: _getText("There are no information available.")
-                    ),
-                  )
-              );
-          },
-        ),
-    );
-  }
-
-  _getText(String text, { double fontsize, Color color }) {
-    return Text(
-        text,
+  _getText(String text, {double fontsize, Color color}) {
+    return Text(text,
         style: TextStyle(
           fontSize: fontsize,
           fontFamily: "Elite",
