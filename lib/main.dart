@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/screens/auth/authscreen.dart';
 import 'package:flutter_dash/screens/home/homescreen.dart';
+import 'package:flutter_dash/screens/play/play_animation.dart';
 import 'package:flutter_dash/screens/play/playscreen.dart';
 import 'package:flutter_dash/screens/start/startscreen.dart';
 
@@ -33,7 +34,8 @@ class _DashScreenState extends State<DashScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
-        body: Startscreen(),
+        //body: Startscreen(),
+        body: PlayAnimation(),
       );
     });
   }
