@@ -7,6 +7,8 @@ import 'package:flutter_dash/utils/clipper.dart';
 import 'package:flutter_dash/utils/color_set.dart';
 
 class PlayAnimation extends StatefulWidget {
+  static String route = "/anim";
+
   @override
   _PlayAnimationState createState() => _PlayAnimationState();
 }
@@ -19,7 +21,6 @@ class _PlayAnimationState extends State<PlayAnimation> {
   Size _size;
   double _corr;
   double _radius;
-  double _fontsize;
 
   int _runner = 0;
   int _count;
@@ -30,7 +31,8 @@ class _PlayAnimationState extends State<PlayAnimation> {
   @override
   void initState() {
     super.initState();
-    this._count = _random.nextInt(10);
+    //this._count = _random.nextInt(10);
+    this._count = 4;
   }
 
   @override
@@ -41,10 +43,7 @@ class _PlayAnimationState extends State<PlayAnimation> {
             Size(constraints.biggest.width, constraints.biggest.height);
         this._corr = (_size.width + _size.height) / 2;
 
-        if (_runner++ == 0) {
-          this._radius = _corr / 75;
-          this._fontsize = _corr / (_count * 4);
-        }
+        if (_runner++ == 0) this._radius = _corr / 75;
 
         return Scaffold(
           backgroundColor: _colorBackground,
@@ -119,7 +118,7 @@ class _PlayAnimationState extends State<PlayAnimation> {
         },
         child: Text(
           '$index',
-          style: TextStyle(fontSize: _fontsize, fontFamily: "Dot"),
+          style: TextStyle(fontSize: _corr / (_count * 4), fontFamily: "Dot"),
         ),
       ),
     );

@@ -19,6 +19,7 @@ class DashApp extends StatelessWidget {
         Startscreen.route: (context) => Startscreen(),
         Authscreen.route: (context) => Authscreen(),
         Playscreen.route: (context) => Playscreen(),
+        PlayAnimation.route: (context) => PlayAnimation(),
       },
     );
   }
@@ -34,8 +35,7 @@ class _DashScreenState extends State<DashScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
-        //body: Startscreen(),
-        body: PlayAnimation(),
+        body: Startscreen(),
       );
     });
   }

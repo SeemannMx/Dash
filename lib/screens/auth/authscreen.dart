@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_dash/screens/home/homescreen.dart';
+import 'package:flutter_dash/screens/play/play_animation.dart';
 import 'package:flutter_dash/screens/play/playscreen.dart';
 import 'package:flutter_dash/utils/authenticator.dart';
 
@@ -125,11 +126,11 @@ class _AuthscreenState extends State<Authscreen> {
 
   _login() {
     _auth.handleSignIn(() {
-      //Navigator.pushNamed(context, Playscreen.route);
       setState(() {
         _userName = "Curent User:    ${_auth.user.email}";
         _space += _space;
       });
+      Navigator.pushNamed(context, PlayAnimation.route);
     });
   }
 
